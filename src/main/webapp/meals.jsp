@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="ru.javawebinar.topjava.model.MealTo" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Vova
   Date: 08.02.2023
@@ -8,7 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="ru">
 <head>
     <title>Meals</title>
 
@@ -18,7 +18,7 @@
 <hr>
 <h2>Meals</h2>
 <ul style="font-size: large">
-    <li><a href="users">add Meal</a></li>
+    <li><a href="addMeal.jsp">add Meal</a></li>
 </ul>
 <table cellspacing="2" border="1" cellpadding="5" width="600">
     <tr>
@@ -30,6 +30,10 @@
     </tr>
 <%
     List<MealTo> allList= (List<MealTo>) request.getAttribute("allMealTo");
+    if(allList==null){
+        response.sendRedirect("meals");
+        return;
+    }
     for(MealTo xxx:allList){
         String colText="";
         if(xxx.isExcess()){
@@ -40,8 +44,8 @@
         <td><font color=<%= colText%>> <%= xxx.getDateTime().toString().replaceAll("T"," ")%></font></td>
         <td> <font color=<%= colText%>> <%= xxx.getDescription()%></font></td>
         <td><font color=<%= colText%>> <%= xxx.getCalories()%></font></td>
-        <td> <%= "Update"%></td>
-        <td> <%= "Delete"%></td>
+        <td><a href="meals?action=edit&mealId=<%= xxx.getId()%>">Update</a></td>
+        <td><a href="meals?action=delete&mealId=<%= xxx.getId()%>">Delete</a></td>
     </tr
 
         <%
